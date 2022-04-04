@@ -6,6 +6,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+1. Go to "parking-lot-react" project using "cd ../parking-lot-react"
+2. Check node version and install node using nvm currenttly we use node v14.19.0 version.
+3. Use required node version type "nvm use v14.19.0" in console and enter.
+4. Then start server using "npm start"
+5. If our rails server use port number 3000 then on console got "Would you like to run the app on another port instead? › (Y/n)" question. type "y"
+
 ### `npm start`
 
 Runs the app in the development mode.\
