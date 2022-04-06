@@ -1,0 +1,83 @@
+body {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.parking-management-title {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.parking-management .content-section {
+  display: flex;
+}
+
+.parking-management .parking-lots-table {
+  padding-left: 20px;
+  padding-right: 10px;
+}
+
+.parking-management .ticket-form {
+  padding-left: 10px;
+  padding-right: 20px;
+}
+
+tbody {
+  display: block;
+  height: 40vh;
+  overflow: auto;
+}
+
+thead,
+tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+span.errors-message {
+  color: red;
+}
+
+tr.parking_tr_allocated {
+  background-color: rgb(234, 250, 234);
+}
+
+.ticket_details {
+  background-color: #f6f6f6;
+  box-shadow: -2px 3px #faf5f5;
+}
+
+.car-registration-numbers-select-tag,
+.car-registration-numbers-list,
+.car-ticket-numbers-parent-list {
+  padding-left: 20px;
+}
+
+.car-registration-numbers-list {
+  padding-top: 10px;
+}
+
+.parking-lots-table table thead tr th {
+  font-weight: 400;
+}
+
+.parking-lots-table table tbody {
+  border-top: 1px solid currentColor !important;
+}
+
+#car-color {
+  padding-bottom: 10px;
+}
+
+.ticket-numbers-form-section {
+  display: flex;
+  margin-left: 20px;
+}
+
+.ticket-numbers-tab-loader {
+  text-align: center;
+  display: flex;
+  flex: auto;
+  align-items: center;
+  padding-left: 10px;
+}
