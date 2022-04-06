@@ -1,7 +1,4 @@
-import {
-  SET_PARKING_LOTS, PARKING_LOT_FETCHED, UPDATE_PARKING_LOT,
-  DELETE_PARKING_LOT
-} from './constants';
+import * as constants from "./constants";
 
 export const initialState = {
   items: [],
@@ -13,18 +10,26 @@ export const initialState = {
 
 const parkingLots = (state = initialState, action) => {
   switch (action.type) {
-    case SET_PARKING_LOTS: {
-      const items = action.items || []
+    case constants.FETCHING_REQUEST: {
       return {
         ...state,
-        items: action?.items || [],
+        isError: false,
+        errors: {},
+        isFetching: true,
+      }
+  }
+    case constants.SET_ITEMS: {
+      const items = action?.items || []
+      return {
+        ...state,
+        items: items,
         totalCount: items.length,
         isError: false,
         errors: {},
         isFetching: false,
       }
     }
-    case PARKING_LOT_FETCHED: {
+    case constants.ITEM_FETCHED: {
       const items = state?.items || []
       const updatedItems = items?.map((item) => {
         if (item.id !== action.item.id) return item;
@@ -39,7 +44,7 @@ const parkingLots = (state = initialState, action) => {
         isFetching: false,
       }
     }
-    case UPDATE_PARKING_LOT: {
+    case constants.UPDATE_ITEM: {
       const items = state?.items || []
       const updatedItems = items?.map((item) => {
         if (item.id !== action.item.id) return item;
@@ -54,10 +59,25 @@ const parkingLots = (state = initialState, action) => {
         isFetching: false,
       }
     }
-    case DELETE_PARKING_LOT: {
+    case constants.DELETE_ITEM: {
       const items = state?.items || []
       const updatedItems = items?.filter((item) => {
         return (item.id !== action.id)
+      })
+      return {
+        ...state,
+        items: updatedItems || [],
+        totalCount: updatedItems.length,
+        isError: false,
+        errors: {},
+        isFetching: false,
+      }
+    }
+    case constants.CHANGE_PARKING_LOT_STATUS: {
+      const items = state?.items || []
+      const updatedItems = items?.map((item) => {
+        if (item.id !== action.parking_lot_id) return item;
+        return { ...item, status: action?.status };
       })
       return {
         ...state,
