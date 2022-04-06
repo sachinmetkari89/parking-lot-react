@@ -1,7 +1,4 @@
-import {
-  SET_TICKETS, TICKET_FETCHED, UPDATE_TICKET,
-  DELETE_TICKET
-} from './constants';
+import * as constants from "./constants";
 
 export const initialState = {
   items: [],
@@ -13,7 +10,15 @@ export const initialState = {
 
 const tickets = (state = initialState, action) => {
   switch (action.type) {
-    case SET_TICKETS: {
+    case constants.FETCHING_REQUEST: {
+        return {
+          ...state,
+          isError: false,
+          errors: {},
+          isFetching: true,
+        }
+    }
+    case constants.SET_ITEMS: {
       const items = action.items || []
       return {
         ...state,
@@ -24,7 +29,7 @@ const tickets = (state = initialState, action) => {
         isFetching: false,
       }
     }
-    case TICKET_FETCHED: {
+    case constants.ITEM_FETCHED: {
       const items = state?.items || []
       const updatedItems = items?.map((item) => {
         if (item.id !== action.item.id) return item;
@@ -39,7 +44,7 @@ const tickets = (state = initialState, action) => {
         isFetching: false,
       }
     }
-    case UPDATE_TICKET: {
+    case constants.UPDATE_ITEM: {
       const items = state?.items || []
       const updatedItems = items?.map((item) => {
         if (item.id !== action.item.id) return item;
@@ -54,7 +59,7 @@ const tickets = (state = initialState, action) => {
         isFetching: false,
       }
     };
-    case DELETE_TICKET: {
+    case constants.DELETE_ITEM: {
       const items = state?.items || []
       const updatedItems = items?.filter((item) => {
         return (item.id !== action.id)
