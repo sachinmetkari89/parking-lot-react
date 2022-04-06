@@ -1,36 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import axios from './utils/axios.ts';
 import { Provider } from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { BASE_URL } from './constants/common.ts';
 import store from './store/store.ts';
 import Routes from './routes/index.tsx';
-import { fetchParkingListsAction } from './parking_lots/actions';
+import "./style/custom.css";
 
-const ParkingWebApp = () => {
-  useEffect(() => {
-    axios({
-      url: '/parking_lots',
-      method: 'get',
-      baseURL: `${BASE_URL}`,
-    })
-      .then((response) => {
-        const { parking_lists } = response.data;
-        fetchParkingListsAction({ items: parking_lists });
-      })
-      .catch((error) => {
-        // handleErrors(error, '/login');
-      });
-  }, []);
-
-  return (
-    <Provider store={store}>
-      {Routes}
-    </Provider>
-  );
-};
+const ParkingWebApp = () => (
+  <Provider store={store}>
+    {Routes}
+  </Provider>
+);
 
 ReactDOM.render(<ParkingWebApp />,
   document.getElementById('main-wrapper')
