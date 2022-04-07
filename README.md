@@ -4,18 +4,20 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, you can follow below steps:
 
-1. Go to "parking-lot-react" project using "cd ../parking-lot-react"
-2. Check node version and install node using nvm currenttly we use node v14.19.0 version.
-3. Use required node version type "nvm use v14.19.0" in console and enter.
-4. Then start server using "npm start"
-5. If our rails server use port number 3000 then on console got "Would you like to run the app on another port instead? › (Y/n)" question. type "y"
-
+### 1. Go to "Parking Management CodeBase - ROR and React" project and "cd ../parking-lot-react" 
+### 2. Check node version and install node using nvm. We use node v14.19.0 version for parking management.
+### 3. Install required node version and use by using "nvm use v14.19.0" in console and enter.
+### 4. Install dependancy and dev-dependancy libraries using "npm install"
+### 5. Then start server using "npm start"
+### 6. If our rails server use port number 3000 then on console got "Would you like to run the app on another port instead? › (Y/n)" question. type "y"
+### 7. Type "http://localhost:3001" in browser url.
+### 8. Use "Parking Management Software"
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:3001](http://localhost:3001) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
