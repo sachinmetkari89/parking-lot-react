@@ -4,11 +4,7 @@ import { connect } from 'react-redux';
 import { fetchTicketNumbers } from "../../actions/common";
 import CarSelectionTag from '../common/car_selection_tag';
 import { capitalizeLabel } from '../../helpers/common';
-
-
-// car_registration_numbers_with_car_color => color
-// ticket_number_with_car_reg_number => reg_number
-// ticket_numbers_with_car_color => color
+import { useDebounce } from "../../custom_hooks/debounce";
 
 interface Props {
   fetchTicketNumbers({ url, color, reg_number }: { url: string, color?: string, reg_number?: string }): any;
@@ -19,6 +15,8 @@ const TicketNumbers = (props: Props) => {
   const [car_color, handleSelect] = useState('');
   const [reg_number, handleRegNumberChange] = useState('');
   const [ticketNumbers, handleResponse] = useState([]);
+
+  const debouncedRegNumber = useDebounce(reg_number, 500);
 
   // We fetching '/tickets/ticket_numbers_with_car_color' api.
   useEffect(() => {
@@ -49,14 +47,14 @@ const TicketNumbers = (props: Props) => {
   // We fetching '/tickets/ticket_number_with_car_reg_number' api.
   useEffect(() => {
     const { fetchTicketNumbers } = props;
-    if (reg_number) {
+    if (debouncedRegNumber) {
       // Handle isLoading to true
       handleLoading(true);
       handleSelect('');
       handleResponse([]);
       // Call fetchTicketNumbers action to fetch ticket numbers.
       fetchTicketNumbers({
-        url: '/tickets/ticket_number_with_car_reg_number', reg_number: reg_number
+        url: '/tickets/ticket_number_with_car_reg_number', reg_number: debouncedRegNumber
       })
         .then((response: { data: any[]; }) => {
           // We saving response data ie. ticket numbers in ticketNumbers state.
@@ -71,7 +69,7 @@ const TicketNumbers = (props: Props) => {
           handleLoading(false);
         })
     }
-  }, [reg_number])
+  }, [debouncedRegNumber])
 
   const ticketNumbersLength = ticketNumbers.length
 
@@ -86,9 +84,7 @@ const TicketNumbers = (props: Props) => {
             id="car-reg-number"
             className="form-control"
             value={reg_number}
-            onChange={(event) => {
-              handleRegNumberChange(event.target.value);
-            }}
+            onChange={(event) => handleRegNumberChange(event.target.value)}
             autoComplete="off"
           />
         </div>
