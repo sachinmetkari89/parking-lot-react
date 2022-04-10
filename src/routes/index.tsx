@@ -4,12 +4,28 @@ import App from '../components/app';
 import ParkingLots from '../parking_lots/components/index';
 import Tickets from '../tickets/components/index';
 
+
+const routes = [
+  { path: '/', element: <App /> },
+  { path: '/parking_lots', element: <ParkingLots /> },
+  { path: '/tickets', element: <Tickets /> },
+]
+
+
 const AllRoutes = (
   <BrowserRouter>
     <Routes>
-      <Route path='/' element={<App />} />
-      <Route path="/parking_lots" element={<ParkingLots />} />
-      <Route path="/tickets" element={<Tickets />} />
+      {
+        routes.map((route) => {
+          return (
+            <Route
+              key={`${route.path}-path`}
+              path={route.path}
+              element={route.element}
+            />
+          )
+        })
+      }
     </Routes>
   </BrowserRouter>
 );

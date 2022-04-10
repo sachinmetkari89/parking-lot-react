@@ -1,4 +1,5 @@
 import * as constants from "./constants";
+import { StateTypes, ActionTypes } from "./type";
 
 export const initialState = {
   items: [],
@@ -8,7 +9,7 @@ export const initialState = {
   isFetching: false,
 };
 
-const parkingLots = (state = initialState, action) => {
+const parkingLots = (state: StateTypes = initialState, action: ActionTypes) => {
   switch (action.type) {
     case constants.FETCHING_REQUEST: {
       return {

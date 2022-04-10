@@ -81,3 +81,7 @@ tr.parking_tr_allocated {
   align-items: center;
   padding-left: 10px;
 }
+
+.car-registration-numbers-section .fields {
+  display: flex;
+}

@@ -2,19 +2,13 @@ import * as constants from "./constants";
 import axios from "../utils/axios";
 import { ALLOCATED } from "../parking_lots/constants";
 import { changeParkingLotStatus } from "../parking_lots/actions";
+import { FetchTicketListsActionTypes, GenerateTicketActionTypes } from "./type";
 
-export const startFetchingRequest = () => {
-  return {
-    type: constants.FETCHING_REQUEST
-  }
-}
+export const startFetchingRequest = () => ({ type: constants.FETCHING_REQUEST })
 
-export const fetchTicketListsAction = (payload) => {
-  return {
-    type: constants.SET_ITEMS,
-    ...payload,
-  }
-}
+export const fetchTicketListsAction = (payload: FetchTicketListsActionTypes) => ({ type: constants.SET_ITEMS, ...payload })
+
+const generateTicketAction = (payload: GenerateTicketActionTypes) => ({ type: constants.ITEM_FETCHED, ...payload });
 
 export function fetchTicketLists() {
   return (dispatch) => {
@@ -31,13 +25,6 @@ export function fetchTicketLists() {
       .catch((error) => {
         throw error.response;
       });
-    }
-  }
-
-const generateTicketAction = (payload) => {
-    return {
-      type: constants.ITEM_FETCHED,
-      ...payload,
     }
   }
 
