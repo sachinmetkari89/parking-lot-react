@@ -1,24 +1,24 @@
 import * as constants from "./constants";
 import axios from "../utils/axios";
+import {
+  ChangeParkingLotStatusPayloadType, FetchParkingListsActionPayloadType,
+  GenerateParkingListActionType,
+} from "./type";
 
-export const changeParkingLotStatus = (payload) => {
-  return {
-    type: constants.CHANGE_PARKING_LOT_STATUS,
-    ...payload,
-  }
+export const changeParkingLotStatus = (payload: ChangeParkingLotStatusPayloadType) => {
+  return { type: constants.CHANGE_PARKING_LOT_STATUS, ...payload }
 }
 
 export const startFetchingRequest = () => {
-  return {
-    type: constants.FETCHING_REQUEST
-  }
+  return { type: constants.FETCHING_REQUEST }
 }
 
-export const fetchParkingListsAction = (payload) => {
-  return {
-    type: constants.SET_ITEMS,
-    ...payload,
-  }
+export const fetchParkingListsAction = (payload: FetchParkingListsActionPayloadType) => {
+  return { type: constants.SET_ITEMS, ...payload }
+}
+
+const generateParkingListAction = (payload: GenerateParkingListActionType) => {
+  return { type: constants.ITEM_FETCHED, ...payload }
 }
 
 export function fetchParkingLists() {
@@ -34,18 +34,10 @@ export function fetchParkingLists() {
         return response;
       })
       .catch((error) => {
-        // handle error
+        throw error.response;
       });
     }
   }
-
-  const generateParkingListAction = (payload) => {
-    return {
-      type: constants.ITEM_FETCHED,
-      ...payload,
-    }
-  }
-
 
   export function generateParkingLot() {
     return (dispatch) => {
@@ -60,7 +52,7 @@ export function fetchParkingLists() {
           return response;
         })
         .catch((error) => {
-          // handle error
+          throw error.response;
         });
       }
     }

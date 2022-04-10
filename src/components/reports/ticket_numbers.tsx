@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { bindActionCreators } from 'redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { fetchTicketNumbers } from "../../actions/common";
-import CarSelectionTag from '../common/car_selection_tag';
-import { capitalizeLabel } from '../../helpers/common';
+import CarSelectionTag from '../fields/car_selection_tag';
 import { useDebounce } from "../../custom_hooks/debounce";
+import InputField from '../fields/input_field';
+import { renderTicketsDataText } from './helper';
+import OrderdList from '../common/orderd_list';
+import Spinner from '../common/spinner';
 
 interface Props {
   fetchTicketNumbers({ url, color, reg_number }: { url: string, color?: string, reg_number?: string }): any;
 }
 
 const TicketNumbers = (props: Props) => {
-  const [isLoading, handleLoading] = useState(false);
-  const [car_color, handleSelect] = useState('');
-  const [reg_number, handleRegNumberChange] = useState('');
-  const [ticketNumbers, handleResponse] = useState([]);
+  const [isLoading, handleLoading] = useState<boolean>(false);
+  const [car_color, handleSelect] = useState<string>('');
+  const [reg_number, handleRegNumberChange] = useState<string>('');
+  const [ticketNumbers, handleResponse] = useState<any[]>([]);
 
-  const debouncedRegNumber = useDebounce(reg_number, 500);
+  // We use debounce to avoid fetching api call on input fields data change.
+  const debouncedRegNumber = useDebounce<string>(reg_number, 300);
 
   // We fetching '/tickets/ticket_numbers_with_car_color' api.
   useEffect(() => {
@@ -28,7 +32,8 @@ const TicketNumbers = (props: Props) => {
       handleResponse([]);
       // Call fetchTicketNumbers action to fetch ticket numbers.
       fetchTicketNumbers({
-        url: '/tickets/ticket_numbers_with_car_color', color: car_color
+        url: '/tickets/ticket_numbers_with_car_color',
+        color: car_color
       })
         .then((response: { data: any[]; }) => {
           // We saving response data ie. ticket numbers in ticketNumbers state.
@@ -54,7 +59,8 @@ const TicketNumbers = (props: Props) => {
       handleResponse([]);
       // Call fetchTicketNumbers action to fetch ticket numbers.
       fetchTicketNumbers({
-        url: '/tickets/ticket_number_with_car_reg_number', reg_number: debouncedRegNumber
+        url: '/tickets/ticket_number_with_car_reg_number',
+        reg_number: debouncedRegNumber
       })
         .then((response: { data: any[]; }) => {
           // We saving response data ie. ticket numbers in ticketNumbers state.
@@ -71,77 +77,40 @@ const TicketNumbers = (props: Props) => {
     }
   }, [debouncedRegNumber])
 
-  const ticketNumbersLength = ticketNumbers.length
+  const ticketNosLength = ticketNumbers.length
 
   return (
     <>
       <div className='col-md-12 ticket-numbers-form-section'>
-        <div className="col-md-3" id="car-reg-number">
-          <label className="form-label">Car Reg. No.</label>
-          <input
-            placeholder="Car registration number"
-            type="text"
-            id="car-reg-number"
-            className="form-control"
-            value={reg_number}
-            onChange={(event) => handleRegNumberChange(event.target.value)}
-            autoComplete="off"
-          />
-        </div>
+        <InputField
+          fieldIdName="car-reg-number"
+          label='Car Reg. No.'
+          placeholder="Car registration number"
+          value={reg_number}
+          handleChange={(value) => handleRegNumberChange(value)}
+        />
+
         <CarSelectionTag
           parentClassName="col-md-3 car-registration-numbers-select-tag"
           handleChange={(color) => handleSelect(color)}
         />
-        {
-          isLoading ? <div className="col-md-1 ticket-numbers-tab-loader">
-            <i className="fa fa-spinner fa-spin" />&nbsp;</div> : null
-        }
+
+        <Spinner
+          isLoading={isLoading}
+          parentClassName="col-md-1 ticket-numbers-tab-loader"
+        />
       </div>
 
       <div className="col-md-12 car-ticket-numbers-parent-list">
-        {
-          ((ticketNumbersLength <= 0) && car_color) && (
-            <div className='col-md-12 no-car-ticket-numbers-found-with-car-color'>
-              No ticket(s) found for {capitalizeLabel(car_color, true)} color car.
-            </div>
-          )
-        }
-        {
-          ((ticketNumbersLength <= 0) && reg_number) && (
-            <div className='col-md-12 no-car-ticket-numbers-found-with-registration-number'>
-              No ticket(s) found for {capitalizeLabel(reg_number, true)} registration number.
-            </div>
-          )
-        }
-        {
-          ((ticketNumbersLength > 0) && car_color) && (
-            <div className='col-md-12 car-ticket-numbers-label'>
-              {capitalizeLabel(ticketNumbersLength, true)} Ticket found(s) for {capitalizeLabel(car_color, true)} color car.
-            </div>
-          )
-        }
-        {
-          ((ticketNumbersLength > 0) && reg_number) && (
-            <div className='col-md-12 car-ticket-numbers-label'>
-              {capitalizeLabel(ticketNumbersLength, true)} Ticket(s) found for {capitalizeLabel(reg_number, true)} registration number.
-            </div>
-          )
-        }
-        <ol>
-          {
-            ticketNumbers?.map((ticketNumber, idx) => {
-              return (
-                <li key={idx}>{ticketNumber}</li>
-              )
-            })
-          }
-        </ol>
+        {renderTicketsDataText({ ticketNosLength, carColor: car_color, regNumber: reg_number })}
+
+        <OrderdList items={ticketNumbers} />
       </div>
     </>
   );
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<AnyAction>) {
   return bindActionCreators({ fetchTicketNumbers }, dispatch);
 }
 

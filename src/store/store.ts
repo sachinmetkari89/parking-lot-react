@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import createReducer from '../reducers/index';
+import CreateReducer from '../reducers/index';
 
 export default (() => {
   // const initialState = {};
@@ -13,8 +13,8 @@ export default (() => {
   if (process.env.NODE_ENV !== 'production') {
     middleware = [...middleware];
   }
-
-  const store:any = createStore(createReducer(), composeWithDevTools(applyMiddleware(...middleware)));
+  //  We create store first arg is list of Combined reducers and second arg is list of all middleware.
+  const store:any = createStore(CreateReducer(), composeWithDevTools(applyMiddleware(...middleware)));
 
   store.async = {};
   // Async reducer registry, adding an extra attribute to the store object

@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { generateTicket } from "../actions";
 import { getFieldErrors } from '../../helpers/common';
 import TicketDetails from './details';
-import CarSelectionTag from '../../components/common/car_selection_tag';
+import CarSelectionTag from '../../components/fields/car_selection_tag';
+import InputField from '../../components/fields/input_field';
+import FormSubmitButton from '../../components/buttons/form_submit_button';
 
 interface Props {
   generateTicket(data: Record<string, any>): any;
 }
 
 const FormComponent = (props: Props) => {
-  const [isLoading, handleLoading] = useState(false);
-  const [car_reg_number, handleChange] = useState('');
-  const [car_color, handleSelect] = useState('');
-  const [errors, handleErrors] = useState({});
-  const [data, responseData] = useState<null | { id: number, car_color: string, car_reg_number: string, number: string, parking_lot_number: string }>(null);
+  const [isLoading, handleLoading] = useState<boolean>(false);
+  const [car_reg_number, handleChange] = useState<string>('');
+  const [car_color, handleSelect] = useState<string>('');
+  const [errors, handleErrors] = useState<Record<string, any>>({});
+  const [data, responseData] = useState<Record<string, any>>(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,30 +52,26 @@ const FormComponent = (props: Props) => {
     <>
       <span className="errors-message">{getFieldErrors({ errors, errorKeys: ['base', 'parking_lot'] })}</span>
       <form onSubmit={(event) => handleSubmit(event)}>
-        <div className="mb-3" id="car-reg-number">
-          <label className="form-label">Car Reg. No.</label>
-          <input
-            placeholder="Car registration number"
-            type="text"
-            id="car-reg-number"
-            className="form-control"
-            value={car_reg_number}
-            onChange={(event) => {
-              handleChange(event.target.value);
-            }}
-            autoComplete="off"
-          />
-          <span className="errors-message">{getFieldErrors({ errors, errorKeys: ['car_reg_number'] })}</span>
-        </div>
+        <InputField
+          parentClassName='mb-3'
+          fieldIdName="car-reg-number"
+          label='Car Reg. No.'
+          placeholder="Car registration number"
+          value={car_reg_number}
+          handleChange={(value) => handleChange(value)}
+          showError
+          errors={errors}
+          errorKeys={['car_reg_number']}
+        />
         <CarSelectionTag
           showErrors
           errors={errors}
           handleChange={(color) => handleSelect(color)}
         />
-        <button className='btn btn-primary' type="submit">
-          {isLoading ? <><i className="fa fa-spinner fa-spin" />&nbsp;</> : null}
-          Generate Ticket
-        </button>
+        <FormSubmitButton
+          isLoading={isLoading}
+          buttonName="Generate Ticket"
+        />
         <br />
         <br />
         {
@@ -88,4 +89,8 @@ const FormComponent = (props: Props) => {
   )
 }
 
-export default FormComponent;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ generateTicket }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(FormComponent);

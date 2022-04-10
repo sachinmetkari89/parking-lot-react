@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { fetchParkingLists } from "../actions";
+import { bindActionCreators } from 'redux';
 import { Table } from 'react-bootstrap'
 import capitalize from "lodash/capitalize";
 
@@ -6,10 +9,17 @@ interface Props {
   parkingLots?: {
     items: Record<string, any>[];
   };
+  fetchParkingLists: any;
 }
 
 const ParkingLots = (props: Props) => {
   const items = props?.parkingLots?.items || []
+
+  useEffect(() => {
+    const { fetchParkingLists } = props;
+    fetchParkingLists()
+  }, [])
+
   return (
     <Table>
       <thead>
@@ -42,4 +52,17 @@ ParkingLots.defaultProps = {
   ParkingLots: {},
 }
 
-export default ParkingLots;
+function mapStateToProps(state, props) {
+  const { parkingLots } = state;
+  return {
+    parkingLots: parkingLots || {},
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    fetchParkingLists,
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ParkingLots);

@@ -7,13 +7,21 @@ interface TicketDetailProps {
   parking_lot_number: string;
 }
 
+const ticketDetails = [
+  { label: 'Car Color', key: 'car_color' },
+  { label: 'Car Reg. Number', key: 'car_reg_number' },
+  { label: 'Ticket Number', key: 'number' },
+  { label: 'Parking Lot Number', key: 'parking_lot_number' }
+]
+
 const TicketDetails = (props: TicketDetailProps) => (
   <div className='ticket_details'>
     <ul>
-      <li><b>Car Color :</b> {props?.car_color || ''}</li>
-      <li><b>Car Reg. Number :</b> {props?.car_reg_number || ''}</li>
-      <li><b>Ticket Number :</b> {props?.number || ''}</li>
-      <li><b>Parking Lot Number :</b> {props?.parking_lot_number || ''}</li>
+      {
+        ticketDetails.map((ticket) => {
+          return (<li key={ticket.key}><b>{ticket.label} :</b> {props?.[ticket.key] || ''}</li>)
+        })
+      }
     </ul>
   </div>
 )

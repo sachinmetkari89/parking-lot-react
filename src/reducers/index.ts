@@ -2,11 +2,10 @@ import { combineReducers } from 'redux';
 import parkingLots from "../parking_lots/reducer";
 import tickets from "../tickets/reducer";
 
-const createReducer = () => {
-  return combineReducers({
+// Combine all reducers by using combineReducers method provided by redux.
+const CreateReducer = () => combineReducers({
     parkingLots,
     tickets
   });
-}
 
-export default createReducer;
+export default CreateReducer;
