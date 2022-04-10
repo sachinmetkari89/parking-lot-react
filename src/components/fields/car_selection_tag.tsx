@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { capitalizeLabel, getFieldErrors } from '../../helpers/common';
 import { CAR_COLORS } from '../../tickets/constants';
 
@@ -10,7 +10,7 @@ interface CarSelectionTagProps {
 }
 
 const CarSelectionTag = (props: CarSelectionTagProps) => {
-  const [car_color, handleSelect] = useState('');
+  const [car_color, handleSelect] = useState<string>('');
 
   useEffect(() => {
     const { handleChange } = props;
@@ -28,9 +28,7 @@ const CarSelectionTag = (props: CarSelectionTagProps) => {
         id="car-color-select-tag"
         name="car_color"
         value={car_color}
-        onChange={(event) => {
-          handleSelect(event.target.value);
-        }}
+        onChange={(event) => handleSelect(event.target.value)}
       >
         <option value="">Select Car Color</option>
         {
@@ -56,4 +54,4 @@ CarSelectionTag.defaultProps = {
   showErrors: false,
 }
 
-export default memo(CarSelectionTag);
+export default CarSelectionTag;
