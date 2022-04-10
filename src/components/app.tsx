@@ -1,24 +1,9 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { fetchParkingLists } from "../parking_lots/actions";
+import React from 'react'
 import ParkingLots from '../parking_lots/components/index';
-import { generateTicket } from "../tickets/actions";
 import TicketForm from "../tickets/components/form";
 import ReportSection from './reports/report_section';
 
-interface Props {
-  fetchParkingLists: any;
-  generateTicket(data: Record<string, any>): any;
-  parkingLots: any;
-}
-
-const App = (props: Props) => {
-  useEffect(() => {
-    const { fetchParkingLists } = props;
-    fetchParkingLists()
-  }, [])
-
+const App = () => {
   return (
     <div className='row parking-management'>
       <div className='col-md-12 title'>
@@ -26,10 +11,10 @@ const App = (props: Props) => {
       </div>
       <div className='col-md-12 content-section'>
         <div className='col-md-8 parking-lots-table'>
-          <ParkingLots parkingLots={props?.parkingLots || {}} />
+          <ParkingLots />
         </div>
         <div className='col-md-4 ticket-form'>
-          <TicketForm generateTicket={props.generateTicket} />
+          <TicketForm />
         </div>
       </div>
       <div className='col-md-12 reports-section'>
@@ -39,18 +24,4 @@ const App = (props: Props) => {
   )
 }
 
-function mapStateToProps(state, props) {
-  const { parkingLots } = state;
-  return {
-    parkingLots: parkingLots || {},
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    fetchParkingLists,
-    generateTicket,
-  }, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
